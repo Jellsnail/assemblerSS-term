@@ -10,22 +10,24 @@ typedef struct {
     int  code;                      // opcode (0x00~0xFF)
 } OpTabEntry;
 
-/**
- * optab.txt를 읽어 메모리에 적재.
- * path: optab.txt 경로
- * 반환: 1 = 성공, 0 = 실패
+/* 
+ * optab.txt 로딩
+ *  path: "optab.txt" 같은 경로
+ *  반환값: 1 = 성공, 0 = 실패
  */
-int optab_init(const char *path);
+int p2_optab_init(const char *path);
 
-/**
- * 메모리 해제용 (현재 구현은 정적 배열이라 할 일 없지만, 형식상 둔다)
+/*
+ * mnemonic으로 opcode 검색
+ *  mnemonic: "LDA", "JSUB" 등
+ *  opcode_out: 찾으면 opcode 저장
+ *  반환값: 1 = 찾음, 0 = 없음
  */
-void optab_free(void);
+int p2_search_optab(const char *mnemonic, int *opcode_out);
 
-/**
- * mnemonic으로 opcode 조회
- * 반환: 1 = 찾음, 0 = 없음
+/*
+ * 필요하면 해제용. 지금 구현에선 정적 배열이라 하는 일은 없다.
  */
-int optab_lookup(const char *mnemonic, int *opcode_out);
+void p2_optab_finalize(void);
 
-#endif // OPTAB_H
+#endif // P2_SEARCH_OPTAB_H

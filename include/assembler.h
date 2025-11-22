@@ -2,6 +2,7 @@
 #define ASSEMBLER_H
 
 #include <stdio.h>
+#include "intfile.h"
 
 #define MAX_LABEL_LEN    8      // 1~6이지만 여유
 #define MAX_OPCODE_LEN   16
@@ -38,6 +39,20 @@ int p1_assign_loc(SourceLine *stmt, int *locctr, int *started);
 
 /* PASS1 - Step3: SYMTAB에 label 등록 */
 int p1_assign_sym(SourceLine *stmt);
+
+// PASS-2
+int p2_assemble_inst(const IntRecord *rec,
+                     char *objcode, int bufsize, int *objlen);
+
+void p2_write_obj_header(FILE *fp, const char *progname, int start_addr, int length);
+void p2_write_obj_add(FILE *fp, int loc, const char *objcode, int objlen);
+void p2_write_obj_end(FILE *fp, int first_exec_addr);
+
+void p2_write_list_header(FILE *fp);
+void p2_write_list_line(FILE *fp, const IntRecord *rec,
+                        const char *objcode, int objlen);
+void p2_write_list_footer(FILE *fp);
+
 
 #endif
 
