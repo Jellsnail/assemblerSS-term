@@ -1,0 +1,13 @@
+TESTPGM START   2000
+FIRST   LDX     ZERO
+LOOP    LDA     ALPHA
+        ADD     BETA
+        STA     GAMMA
+        TIX     ENDLP
+        JLT     LOOP
+ENDLP   RSUB
+ZERO    WORD    0
+ALPHA   WORD    5
+BETA    WORD    3
+GAMMA   RESW    1
+        END     FIRST

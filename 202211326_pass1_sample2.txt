@@ -1,0 +1,32 @@
+Script started on 2025-11-15 23:49:34+09:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="71" LINES="14"]
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ .bin[K[K[K/[K[Kmake
+[?2004lmkdir -p bin
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ ./bin/si[K[K[K[K[K[K[K[K[7m./bin/sicasm test/sample2.sic[27m./bin/sicasm test/sample2.sic
+[?2004lPASS1 완료: intermediate.txt, symtab.txt 생성.
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ cat intermediate.txt
+[?2004l   1 | 0000 | L:-      | OP:TESTPGM  | OPR:START   2000
+   2 | 0003 | L:FIRST  | OP:LDX      | OPR:ZERO
+   3 | 0006 | L:LOOP   | OP:LDA      | OPR:ALPHA
+   4 | 0009 | L:-      | OP:ADD      | OPR:BETA
+   5 | 000C | L:-      | OP:STA      | OPR:GAMMA
+   6 | 000F | L:-      | OP:TIX      | OPR:ENDLP
+   7 | 0012 | L:-      | OP:JLT      | OPR:LOOP
+   8 | 0015 | L:ENDLP  | OP:RSUB     | OPR:-
+   9 | 0018 | L:ZERO   | OP:WORD     | OPR:0
+  10 | 001B | L:ALPHA  | OP:WORD     | OPR:5
+  11 | 001E | L:BETA   | OP:WORD     | OPR:3
+  12 | 0021 | L:GAMMA  | OP:RESW     | OPR:1
+  13 |      | L:-      | OP:END      | OPR:FIRST
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ cat symtab.txt
+[?2004lSYMBOL  ADDRESS  LINE
+FIRST   0003     2
+LOOP    0006     3
+ENDLP   0015     8
+ZERO    0018     9
+ALPHA   001B     10
+BETA    001E     11
+GAMMA   0021     12
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ ext[Kit
+[?2004lexit
+
+Script done on 2025-11-15 23:50:20+09:00 [COMMAND_EXIT_CODE="0"]

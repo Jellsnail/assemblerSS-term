@@ -1,0 +1,33 @@
+Script started on 2025-11-15 23:50:47+09:00 [TERM="xterm-256color" TTY="/dev/pts/3" COLUMNS="71" LINES="14"]
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ make
+[?2004lmkdir -p bin
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ [7m./bin/sicasm test/sample2.sic[27m./bin/sicasm test/sample2.sic[1P2.sic[C[1P.sice.sic3.sic[C[C[C[C
+[?2004lPASS1 완료: intermediate.txt, symtab.txt 생성.
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ cat intermediate.txt
+[?2004l   1 | 3000 | L:EX3    | OP:START    | OPR:3000
+   2 | 3000 | L:BUF    | OP:RESB     | OPR:20
+   3 | 3014 | L:MSG    | OP:BYTE     | OPR:X'48656C6C6F'   . "Hello" (hex)
+   4 | 3019 | L:COUNT  | OP:WORD     | OPR:10
+   5 | 301C | L:-      | OP:LDA      | OPR:COUNT
+   6 | 301F | L:-      | OP:SUB      | OPR:ONE
+   7 | 3022 | L:-      | OP:STA      | OPR:COUNT
+   8 | 3025 | L:-      | OP:COMP     | OPR:ZERO
+   9 | 3028 | L:-      | OP:JEQ      | OPR:DONE
+  10 | 302B | L:-      | OP:J        | OPR:EX3
+  11 | 302E | L:ONE    | OP:WORD     | OPR:1
+  12 | 3031 | L:ZERO   | OP:WORD     | OPR:0
+  13 | 3034 | L:DONE   | OP:RSUB     | OPR:-
+  14 |      | L:-      | OP:END      | OPR:EX3
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ cat symtab.txt
+[?2004lSYMBOL  ADDRESS  LINE
+EX3     3000     1
+BUF     3000     2
+MSG     3014     3
+COUNT   3019     4
+ONE     302E     11
+ZERO    3031     12
+DONE    3034     13
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ exit
+[?2004lexit
+
+Script done on 2025-11-15 23:51:20+09:00 [COMMAND_EXIT_CODE="0"]

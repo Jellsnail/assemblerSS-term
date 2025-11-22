@@ -1,0 +1,14 @@
+EX3     START   3000
+BUF     RESB    20
+MSG     BYTE    X'48656C6C6F'   . "Hello" (hex)
+COUNT   WORD    10
+        LDA     COUNT
+        SUB     ONE
+        STA     COUNT
+        COMP    ZERO
+        JEQ     DONE
+        J       EX3
+ONE     WORD    1
+ZERO    WORD    0
+DONE    RSUB
+        END     EX3

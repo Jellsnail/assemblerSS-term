@@ -1,0 +1,13 @@
+   1 | 0000 | L:-      | OP:TESTPGM  | OPR:START   2000
+   2 | 0003 | L:FIRST  | OP:LDX      | OPR:ZERO
+   3 | 0006 | L:LOOP   | OP:LDA      | OPR:ALPHA
+   4 | 0009 | L:-      | OP:ADD      | OPR:BETA
+   5 | 000C | L:-      | OP:STA      | OPR:GAMMA
+   6 | 000F | L:-      | OP:TIX      | OPR:ENDLP
+   7 | 0012 | L:-      | OP:JLT      | OPR:LOOP
+   8 | 0015 | L:ENDLP  | OP:RSUB     | OPR:-
+   9 | 0018 | L:ZERO   | OP:WORD     | OPR:0
+  10 | 001B | L:ALPHA  | OP:WORD     | OPR:5
+  11 | 001E | L:BETA   | OP:WORD     | OPR:3
+  12 | 0021 | L:GAMMA  | OP:RESW     | OPR:1
+  13 |      | L:-      | OP:END      | OPR:FIRST
