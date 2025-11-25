@@ -1,0 +1,50 @@
+Script started on 2025-11-22 23:34:12+09:00 [TERM="xterm-256color" TTY="/dev/pts/4" COLUMNS="120" LINES="30"]
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ n[Kmake clae[Kn[K[Kean
+[?2004lrm -f src/*.o bin/sicasm
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ make
+[?2004lmkdir -p bin
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/main.o src/main.c
+[01m[Ksrc/main.c:[m[K In function ‘[01m[Kmain[m[K’:
+[01m[Ksrc/main.c:87:13:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kst[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable-Wunused-variable]8;;[m[K]
+   87 |         int [01;35m[Kst[m[K = p2_assemble_inst(&rec, objcode, sizeof(objcode), &objlen);
+      |             [01;35m[K^~[m[K
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p1_read_source.o src/p1_read_source.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p1_assign_loc.o src/p1_assign_loc.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p1_assign_sym.o src/p1_assign_sym.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/access_int_file.o src/access_int_file.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/access_symtab.o src/access_symtab.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_search_optab.o src/p2_search_optab.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_assemble_inst.o src/p2_assemble_inst.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_write_obj.o src/p2_write_obj.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_write_list.o src/p2_write_list.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude -o bin/sicasm src/main.o src/p1_read_source.o src/p1_assign_loc.o src/p1_assign_sym.o src/access_int_file.o src/access_symtab.o src/p2_search_optab.o src/p2_assemble_inst.o src/p2_write_obj.o src/p2_write_list.o
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ ./assembler tw[Kest[K[K[K[K[K[K[K[K[K[K[K[K[K[Kbin [K/sicasm test/sample1.txt[K[K[Ksic
+[?2004lPASS1 완료: intermediate.txt, symtab.txt 생성.
+int_read_record: parse error -> '   1 | 1000 | L:COPY   | OP:START    | OPR:1000'
+PASS2 완료: out.obj, out.lst 생성.
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ cat intermediate.txt[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kcat intermediate.txt
+[?2004l   1 | 1000 | L:COPY   | OP:START    | OPR:1000
+   2 | 1000 | L:FIRST  | OP:LDA      | OPR:ALPHA
+   3 | 1003 | L:-      | OP:STA      | OPR:BETA
+   4 | 1006 | L:ALPHA  | OP:WORD     | OPR:1
+   5 | 1009 | L:BETA   | OP:RESW     | OPR:1
+   6 |      | L:-      | OP:END      | OPR:FIRST
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ cat symtac[Kv.txt[K[K[K[K[Kb.ty[Kxt
+[?2004lSYMBOL  ADDRESS  LINE
+COPY    1000     1
+FIRST   1000     2
+ALPHA   1006     4
+BETA    1009     5
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ cat.[K out. [Kobj
+[?2004lHPROG  000000000000
+E000000
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ x[Kcat out. [Klst
+[?2004l===== ASSEMBLY LISTING =====
+LOC   OBJCODE     SOURCE
+---------------------------------------------
+---------------------------------------------
+===== END OF LISTING =====
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ e[Kexit
+[?2004lexit
+
+Script done on 2025-11-22 23:39:58+09:00 [COMMAND_EXIT_CODE="0"]

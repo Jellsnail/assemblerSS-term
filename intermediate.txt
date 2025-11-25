@@ -1,13 +1,14 @@
-   1 | 0000 | L:-      | OP:TESTPGM  | OPR:START   2000
-   2 | 0003 | L:FIRST  | OP:LDX      | OPR:ZERO
-   3 | 0006 | L:LOOP   | OP:LDA      | OPR:ALPHA
-   4 | 0009 | L:-      | OP:ADD      | OPR:BETA
-   5 | 000C | L:-      | OP:STA      | OPR:GAMMA
-   6 | 000F | L:-      | OP:TIX      | OPR:ENDLP
-   7 | 0012 | L:-      | OP:JLT      | OPR:LOOP
-   8 | 0015 | L:ENDLP  | OP:RSUB     | OPR:-
-   9 | 0018 | L:ZERO   | OP:WORD     | OPR:0
-  10 | 001B | L:ALPHA  | OP:WORD     | OPR:5
-  11 | 001E | L:BETA   | OP:WORD     | OPR:3
-  12 | 0021 | L:GAMMA  | OP:RESW     | OPR:1
-  13 |      | L:-      | OP:END      | OPR:FIRST
+   1 | 3000 | L:EX3    | OP:START    | OPR:3000
+   2 | 3000 | L:BUF    | OP:RESB     | OPR:20
+   3 | 3014 | L:MSG    | OP:BYTE     | OPR:X'48656C6C6F'   . "Hello" (hex)
+   4 | 3019 | L:COUNT  | OP:WORD     | OPR:10
+   5 | 301C | L:-      | OP:LDA      | OPR:COUNT
+   6 | 301F | L:-      | OP:SUB      | OPR:ONE
+   7 | 3022 | L:-      | OP:STA      | OPR:COUNT
+   8 | 3025 | L:-      | OP:COMP     | OPR:ZERO
+   9 | 3028 | L:-      | OP:JEQ      | OPR:DONE
+  10 | 302B | L:-      | OP:J        | OPR:EX3
+  11 | 302E | L:ONE    | OP:WORD     | OPR:1
+  12 | 3031 | L:ZERO   | OP:WORD     | OPR:0
+  13 | 3034 | L:DONE   | OP:RSUB     | OPR:-
+  14 |      | L:-      | OP:END      | OPR:EX3
