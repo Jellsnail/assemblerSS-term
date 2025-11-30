@@ -80,9 +80,19 @@ int main(int argc, char *argv[]) {
     IntRecord rec;
     char objcode[64];
     int objlen = 0;
+    int pass2_error_count = 0;   // PASS2 에러 개수 카운트
 
     while (int_read_record(&rec) == 1) {
         int st = p2_assemble_inst(&rec, objcode, sizeof(objcode), &objlen);
+
+        if (st == -1) {
+        // PASS2 조립 중 에러 발생
+        pass2_error_count++;
+        objcode[0] = '\0';
+        objlen = 0;
+    }
+    // st == 0 → 원래부터 오브젝트 없는 줄 (RES/START/END 등)
+    // st == 1 → 정상 조립
 
         // 리스트 파일 출력
         p2_write_list_line(lst_fp, &rec, objcode, objlen);
