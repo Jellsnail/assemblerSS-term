@@ -11,12 +11,7 @@ void p2_write_list_header(FILE *fp)
     fprintf(fp, "---------------------------------------------\n");
 }
 
-/*
- * listing 출력
- * rec    : INTFILE에서 읽은 한 줄
- * objcode: assemble_inst 결과 (없으면 "")
- * objlen : 객체코드 길이(바이트)
- */
+
 void p2_write_list_line(FILE *fp, const IntRecord *rec,
                         const char *objcode, int objlen)
 {
@@ -51,7 +46,7 @@ void p2_write_list_line(FILE *fp, const IntRecord *rec,
     strncpy(src, tmp, sizeof(src) - 1);
     src[sizeof(src) - 1] = '\0';
 
-    // PASS-1 에러 플래그가 있다면 끝에 표시 (지금은 거의 0일 것)
+    // PASS-1 에러 플래그가 있다면 끝에 표시
     if (rec->errflag != 0) {
         size_t len = strlen(src);
         snprintf(src + len, sizeof(src) - len,

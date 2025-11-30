@@ -44,19 +44,15 @@ void int_write_record(const IntRecord *rec)
     }
 
     if (rec->is_comment) {
-        // 주석 라인: ". ..." 형태로 그대로 기록
         if (rec->raw_line[0] != '\0') {
-            // raw_line이 이미 ". ..." 형태로 들어있다고 가정
             fprintf(int_fp, "%s\n", rec->raw_line);
         } else {
-            // 안전장치: 내용 없으면 최소 '.'만 찍기
             fprintf(int_fp, ".\n");
         }
         return;
     }
 
     // 일반 라인: "LOC_HEX LABEL OPCODE OPERAND ERRFLAG"
-    // LOC는 4자리 16진수(필요시 5자리로 늘려도 됨)
     fprintf(int_fp,
             "%04X %s %s %s %d\n",
             rec->loc,

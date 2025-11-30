@@ -6,7 +6,7 @@
 
 #include "intfile.h"
 #include "symtab.h"
-#include "optab.h"   // p2_optab_init / p2_search_optab 등
+#include "optab.h"
 
 // 대소문자 무시 비교
 static int eq_icase(const char *a, const char *b) {
@@ -70,7 +70,6 @@ static int assemble_word(const char *operand, char *objcode, int bufsize, int *o
     char *endp;
     long val = strtol(operand, &endp, 10);
     if (*endp != '\0' && !isspace((unsigned char)*endp)) {
-        // 심볼 이름이 올 수 있게 확장하고 싶으면 여기서 symtab_search 호출
         return -1;
     }
 
@@ -80,7 +79,6 @@ static int assemble_word(const char *operand, char *objcode, int bufsize, int *o
     return 1;
 }
 
-// 일반 SIC 명령어 (format 3) 처리
 static int assemble_format3(const IntRecord *rec,
                             char *objcode, int bufsize, int *objlen_out) {
     int opcode_val;
@@ -130,21 +128,6 @@ static int assemble_format3(const IntRecord *rec,
     return 1;
 }
 
-/*
- * PASS-2에서 한 줄당 호출하는 함수.
- *
- * 입력:
- *   rec      : INTFILE에서 읽어온 한 줄
- *   objcode  : 16진 문자열 저장 버퍼
- *   bufsize  : 버퍼 크기
- * 출력:
- *   objlen   : 생성된 오브젝트 코드의 바이트 수 (0이면 이 줄은 오브젝트 없음)
- *
- * 반환값:
- *   1  = 오브젝트 코드 생성함
- *   0  = 오브젝트 코드 없음(RESx, START/END, 주석 등)
- *  -1  = 에러(형식 이상, 미정의 심볼 등)
- */
 int p2_assemble_inst(const IntRecord *rec,
                      char *objcode, int bufsize, int *objlen) {
     objcode[0] = '\0';

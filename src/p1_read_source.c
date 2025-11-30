@@ -5,12 +5,10 @@
 #include "assembler.h"
 #include "intfile.h"   // IntRecord, int_write_record 사용
 
-// 전역 프로그램 정보 (정의)
 int g_start_addr  = 0;
 int g_prog_length = 0;
 char g_progname[MAX_LABEL_LEN] = "NONAME";
 
-/* label 규칙: 1~6글자, 첫 글자 A~Z, 나머지 A~Z/0~9 */
 static int is_valid_label(const char *s) {
     int len = (int)strlen(s);
     if (len < 1 || len > 6) return 0;
@@ -23,15 +21,12 @@ static int is_valid_label(const char *s) {
     return 1;
 }
 
-/* 현재는 간단히 SIC opcode + directive만 넣어둔 테이블 */
-//>>>>>임시 테이블<<<<
+
 static int is_mnemonic(const char *s) {
     static const char *table[] = {
-        // SIC 명령어 (교과서 기준 26개)
         "ADD","AND","COMP","DIV","J","JEQ","JGT","JLT","JSUB",
         "LDA","LDCH","LDL","LDX","MUL","OR","RD","RSUB","STA",
         "STCH","STL","STSW","STX","SUB","TD","TIX","WD",
-        // assembler directive
         "BYTE","WORD","RESB","RESW","START","END"
     };
     const int n = sizeof(table)/sizeof(table[0]);
@@ -59,12 +54,9 @@ static void trim_spaces(char *s) {
     }
 }
 
-/* 한 줄을 규칙에 따라 파싱 */
+
 static void parse_line(const char *line, SourceLine *out) {
     char buf[MAX_LINE_LEN];
-
-    // ⚠️ 여기서는 out을 memset으로 지우지 않는다.
-    // (line_no 등은 호출자가 채워 둔 값을 유지해야 함)
 
     strncpy(out->original, line, MAX_LINE_LEN - 1);
     out->original[MAX_LINE_LEN - 1] = '\0';
@@ -73,7 +65,6 @@ static void parse_line(const char *line, SourceLine *out) {
     buf[MAX_LINE_LEN - 1] = '\0';
     rstrip_newline(buf);
 
-    // 공백/탭만 있는지
     int only_ws = 1;
     for (const char *p = buf; *p; ++p) {
         if (!isspace((unsigned char)*p)) {
@@ -179,14 +170,7 @@ static void parse_line(const char *line, SourceLine *out) {
     out->operand[MAX_OPERAND_LEN - 1] = '\0';
 }
 
-/*
- * PASS-1 전체 흐름:
- *  - 소스 한 줄 읽기
- *  - parse_line → SourceLine 채우기
- *  - p1_assign_loc → LOC 부여
- *  - p1_assign_sym → SYMTAB 등록
- *  - IntRecord 구성 → int_write_record() 호출
- */
+
 int p1_read_source(const char *src_path) {
     FILE *fp = fopen(src_path, "r");
     if (!fp) {
@@ -208,7 +192,6 @@ int p1_read_source(const char *src_path) {
 
         parse_line(line, &stmt);
 
-        // 빈 줄은 INTFILE에 기록하지 않아도 됨
         if (stmt.type == LINE_EMPTY) {
             continue;
         }
@@ -225,9 +208,7 @@ int p1_read_source(const char *src_path) {
 
         // LOC 계산
         p1_assign_loc(&stmt, &locctr, &started);
-        // (필요하면 나중에 p1_assign_loc의 에러를 errflag에 반영 가능)
 
-        // SYMTAB에 label 등록 (중복 라벨 등 에러 체크)
         if (p1_assign_sym(&stmt) != 0) {
             errflag = 1;   // 예: 1 = SYMTAB 관련 에러 (중복 라벨 등)
         }
@@ -243,8 +224,6 @@ int p1_read_source(const char *src_path) {
         if (stmt.type == LINE_COMMENT) {
             // 주석 라인
             rec.is_comment = 1;
-            // access_int_file.c의 int_write_record는
-            // rec->raw_line만 보고 ". ..." 형태로 저장/판단한다.
             int_write_record(&rec);
         } else if (stmt.type == LINE_STATEMENT) {
             rec.is_comment = 0;

@@ -67,9 +67,6 @@ int main(int argc, char *argv[]) {
 
     p2_write_list_header(lst_fp);
 
-    // 프로그램 이름 및 시작 주소 가져오기
-    // START 라인 처리 필요 → PASS1에서 start address 저장했다면 가져올 수 있음.
-    // 일단 기본값 0으로 처리
     int start_addr = g_start_addr;
     int program_length = g_prog_length;
 

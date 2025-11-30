@@ -46,7 +46,7 @@ int p2_optab_init(const char *path)
         // "<MNEMONIC> <HEX>" 형식
         if (sscanf(p, "%15s %x", name, &code_hex) != 2) {
             fprintf(stderr, "p2_optab_init: invalid line: %s", line);
-            continue;   // 심각하게 볼 거면 여기서 0 리턴해도 됨
+            continue;
         }
 
         if (optab_count >= OPTAB_MAX_ENTRIES) {
@@ -91,7 +91,6 @@ int p2_search_optab(const char *mnemonic, int *opcode_out)
 
 void p2_optab_finalize(void)
 {
-    // 정적 배열이므로 실제로 free 할 것은 없음
     optab_count  = 0;
     optab_loaded = 0;
 }

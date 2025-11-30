@@ -1,5 +1,3 @@
-/*지금은 모든 알 수 없는 opcode를 “3바이트짜리 기계 명령”이라고 가정했다.
-나중에 OPTAB 붙이면 여기에서 진짜로 검사하게 바꾸면 된다.*/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -52,7 +50,6 @@ static int byte_length(const char *operand) {
         return hex_count / 2;
     }
 
-    // (필요하면 나중에 C'..' 처리 추가)
     return -1;
 }
 
@@ -140,7 +137,6 @@ int p1_assign_loc(SourceLine *stmt, int *locctr, int *started) {
     } else if (strcmp(stmt->opcode, "START") == 0) {
         inc = 0; // 이 경우는 사실상 안 옴
     } else {
-        // 나머지는 전부 SIC 명령어라고 가정 (3바이트)
         inc = 3;
     }
 

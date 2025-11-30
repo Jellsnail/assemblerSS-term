@@ -4,13 +4,11 @@
 #include "intfile.h"
 #include "assembler.h"
 
-/* T record 버퍼 */
 static char t_record[1024];
 static int  t_start_addr = 0;
 static int  t_length = 0;
 static int  t_active = 0;
 
-/* T record 출력 후 초기화 */
 static void flush_t_record(FILE *fp)
 {
     if (!t_active) return;
@@ -22,7 +20,6 @@ static void flush_t_record(FILE *fp)
     t_length = 0;
 }
 
-/* 새 T record 시작 */
 static void start_t_record(int loc)
 {
     t_active = 1;
@@ -31,11 +28,7 @@ static void start_t_record(int loc)
     t_length = 0;
 }
 
-/*
- * 오브젝트 코드를 T record에 추가
- * objcode: "141033" 같은 HEX 문자열
- * objlen : 바이트 수
- */
+
 void p2_write_obj_add(FILE *fp, int loc, const char *objcode, int objlen)
 {
     // 객체코드 없으면 (RESB/RESW/START/END) → 현재 T 레코드 강제 종료
@@ -44,7 +37,6 @@ void p2_write_obj_add(FILE *fp, int loc, const char *objcode, int objlen)
         return;
     }
 
-    // 새 T record 시작 필요
     if (!t_active) {
         start_t_record(loc);
     }
@@ -60,9 +52,7 @@ void p2_write_obj_add(FILE *fp, int loc, const char *objcode, int objlen)
     t_length += objlen;
 }
 
-/*
- * H record 출력
- */
+
 void p2_write_obj_header(FILE *fp, const char *progname, int start_addr, int length)
 {
     char namebuf[7];
@@ -70,9 +60,7 @@ void p2_write_obj_header(FILE *fp, const char *progname, int start_addr, int len
     fprintf(fp, "H%s%06X%06X\n", namebuf, start_addr, length);
 }
 
-/*
- * E record 출력
- */
+
 void p2_write_obj_end(FILE *fp, int first_exec_addr)
 {
     // 남아있는 마지막 T record flush
