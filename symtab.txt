@@ -1,5 +1,8 @@
 SYMBOL  ADDRESS  LINE
-COPY    1000     1
-FIRST   1000     2
-ALPHA   1006     4
-BETA    1009     5
+EX3     3000     1
+BUF     3000     2
+MSG     3014     3
+COUNT   3019     4
+ONE     302E     11
+ZERO    3031     12
+DONE    3034     13

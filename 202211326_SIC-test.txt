@@ -1,0 +1,191 @@
+Script started on 2025-11-30 23:51:15+09:00 [TERM="xterm-256color" TTY="/dev/pts/7" COLUMNS="140" LINES="41"]
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ make
+[?2004lmkdir -p bin
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/main.o src/main.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p1_read_source.o src/p1_read_source.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p1_assign_loc.o src/p1_assign_loc.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p1_assign_sym.o src/p1_assign_sym.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/access_int_file.o src/access_int_file.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/access_symtab.o src/access_symtab.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_search_optab.o src/p2_search_optab.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_assemble_inst.o src/p2_assemble_inst.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_write_obj.o src/p2_write_obj.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_write_list.o src/p2_write_list.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude -o bin/sicasm src/main.o src/p1_read_source.o src/p1_assign_loc.o src/p1_assign_sym.o src/access_int_file.o src/access_symtab.o src/p2_search_optab.o src/p2_assemble_inst.o src/p2_write_obj.o src/p2_write_list.o
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ [7m./bin/sicasm[27m./bin/sicasm test [K/se[Kample1.cs[K[Kcis[K[K[Ksic
+[?2004lPASS1 완료: intermediate.txt, symtab.txt 생성.
+PASS2 완료: out.obj, out.lst 생성.
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ cat symtab
+[?2004lcat: symtab: No such file or directory
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ a[Kcat symtab.txt
+[?2004lSYMBOL  ADDRESS  LINE
+COPY    1000     1
+FIRST   1000     2
+ALPHA   1006     4
+BETA    1009     5
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ cat intermediate.txt
+[?2004l1000 COPY START 1000 0
+1000 FIRST LDA ALPHA 0
+1003 - STA BETA 0
+1006 ALPHA WORD 1 0
+1009 BETA RESW 1 0
+0000 - END FIRST 0
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ cat out.k[Kog[Kbj.[K
+[?2004lHCOPY  00100000000C
+T001000090010060C1009000001
+E001000
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ cat out.lst
+[?2004l===== ASSEMBLY LISTING =====
+LOC   OBJCODE     SOURCE
+---------------------------------------------
+1000              COPY   START    1000
+1000  001006      FIRST  LDA      ALPHA
+1003  0C1009             STA      BETA
+1006  000001      ALPHA  WORD     1
+1009              BETA   RESW     1
+0000                     END      FIRST
+---------------------------------------------
+===== END OF LISTING =====
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ e[Kmake clean
+[?2004lrm -f src/*.o bin/sicasm
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ make
+[?2004lmkdir -p bin
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/main.o src/main.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p1_read_source.o src/p1_read_source.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p1_assign_loc.o src/p1_assign_loc.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p1_assign_sym.o src/p1_assign_sym.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/access_int_file.o src/access_int_file.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/access_symtab.o src/access_symtab.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_search_optab.o src/p2_search_optab.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_assemble_inst.o src/p2_assemble_inst.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_write_obj.o src/p2_write_obj.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_write_list.o src/p2_write_list.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude -o bin/sicasm src/main.o src/p1_read_source.o src/p1_assign_loc.o src/p1_assign_sym.o src/access_int_file.o src/access_symtab.o src/p2_search_optab.o src/p2_assemble_inst.o src/p2_write_obj.o src/p2_write_list.o
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ [7m./bin/sicasm[27m./bin/sicasm test/sample2.txt
+[?2004lfailed to open source file: No such file or directory
+PASS1: p1_read_source 단계에서 오류 발생
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ c[K[7m./bin/sicasm[27m./bin/sicasm test/sample.[K2.sic
+[?2004lPASS1 완료: intermediate.txt, symtab.txt 생성.
+PASS2 완료: out.obj, out.lst 생성.
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ [7mcat intermediate.txt[27m
+[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccat intermediate.txt
+[A
+[?2004l0000 - TESTPGM START   2000 0
+0003 FIRST LDX ZERO 0
+0006 LOOP LDA ALPHA 0
+0009 - ADD BETA 0
+000C - STA GAMMA 0
+000F - TIX ENDLP 0
+0012 - JLT LOOP 0
+0015 ENDLP RSUB - 0
+0018 ZERO WORD 0 0
+001B ALPHA WORD 5 0
+001E BETA WORD 3 0
+0021 GAMMA RESW 1 0
+0000 - END FIRST 0
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ [7mcat symtab.txt[27m
+[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccat symtab.txt
+[A
+[?2004lSYMBOL  ADDRESS  LINE
+FIRST   0003     2
+LOOP    0006     3
+ENDLP   0015     8
+ZERO    0018     9
+ALPHA   001B     10
+BETA    001E     11
+GAMMA   0021     12
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ [7mcat out.obj[27m
+[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccat out.obj
+[A
+[?2004lHNONAME000000000024
+T0000031E04001800001B18001E0C00212C00153800064C0000000000000005000003
+E000000
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ [7mcat out.lst[27m
+[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccat out.lst
+[A
+[?2004l===== ASSEMBLY LISTING =====
+LOC   OBJCODE     SOURCE
+---------------------------------------------
+0000                     TESTPGM  START   *** ERROR 2000 ***
+0003  040018      FIRST  LDX      ZERO
+0006  00001B      LOOP   LDA      ALPHA
+0009  18001E             ADD      BETA
+000C  0C0021             STA      GAMMA
+000F  2C0015             TIX      ENDLP
+0012  380006             JLT      LOOP
+0015  4C0000      ENDLP  RSUB
+0018  000000      ZERO   WORD     0
+001B  000005      ALPHA  WORD     5
+001E  000003      BETA   WORD     3
+0021              GAMMA  RESW     1
+0000                     END      FIRST
+---------------------------------------------
+===== END OF LISTING =====
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ make clean
+[?2004lrm -f src/*.o bin/sicasm
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ make
+[?2004lmkdir -p bin
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/main.o src/main.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p1_read_source.o src/p1_read_source.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p1_assign_loc.o src/p1_assign_loc.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p1_assign_sym.o src/p1_assign_sym.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/access_int_file.o src/access_int_file.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/access_symtab.o src/access_symtab.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_search_optab.o src/p2_search_optab.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_assemble_inst.o src/p2_assemble_inst.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_write_obj.o src/p2_write_obj.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude   -c -o src/p2_write_list.o src/p2_write_list.c
+gcc -Wall -Wextra -std=c11 -g -Iinclude -o bin/sicasm src/main.o src/p1_read_source.o src/p1_assign_loc.o src/p1_assign_sym.o src/access_int_file.o src/access_symtab.o src/p2_search_optab.o src/p2_assemble_inst.o src/p2_write_obj.o src/p2_write_list.o
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ [7mcat out.lst[27m
+[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccat out.lst
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K[K[K[K[K[K[K[K[K[K[7m./bin/sicasm test/sample2.sic[27m./bin/sicasm test/sample2.sic[K[K[K[K[K3.sc[Kic
+[?2004lPASS1 완료: intermediate.txt, symtab.txt 생성.
+int_read_record: parse error -> '3014 MSG BYTE X'48656C6C6F'   . "Hello" (hex) 0'
+PASS2 완료: out.obj, out.lst 생성.
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ [7mcat intermediate.txt[27m
+[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccat intermediate.txt
+[A
+[?2004l3000 EX3 START 3000 0
+3000 BUF RESB 20 0
+3014 MSG BYTE X'48656C6C6F'   . "Hello" (hex) 0
+3019 COUNT WORD 10 0
+301C - LDA COUNT 0
+301F - SUB ONE 0
+3022 - STA COUNT 0
+3025 - COMP ZERO 0
+3028 - JEQ DONE 0
+302B - J EX3 0
+302E ONE WORD 1 0
+3031 ZERO WORD 0 0
+3034 DONE RSUB - 0
+0000 - END EX3 0
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ [7mcat symtab.txt[27m
+[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccat symtab.txt
+[A
+[?2004lSYMBOL  ADDRESS  LINE
+EX3     3000     1
+BUF     3000     2
+MSG     3014     3
+COUNT   3019     4
+ONE     302E     11
+ZERO    3031     12
+DONE    3034     13
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ [7mcat out.obj[27m
+[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccat out.obj
+[A
+[?2004lHEX3   003000000037
+E003000
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ [7mcat out.lst[27m
+[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccat out.lst
+[A
+[?2004l===== ASSEMBLY LISTING =====
+LOC   OBJCODE     SOURCE
+---------------------------------------------
+3000              EX3    START    3000
+3000              BUF    RESB     20
+---------------------------------------------
+===== END OF LISTING =====
+[?2004h]0;starr@localhost: ~/sic_assembler[01;32mstarr@localhost[00m:[01;34m~/sic_assembler[00m$ exit
+[?2004lexit
+
+Script done on 2025-11-30 23:54:32+09:00 [COMMAND_EXIT_CODE="0"]
