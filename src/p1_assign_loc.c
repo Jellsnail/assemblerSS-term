@@ -83,11 +83,19 @@ int p1_assign_loc(SourceLine *stmt, int *locctr, int *started) {
             stmt->loc = *locctr;
             stmt->has_loc = 1;
             *started = 1;
+
+            // ★ 전역 시작 주소/길이 초기화
+            g_start_addr  = start_addr;
+            g_prog_length = 0;
+
             return 0;
         } else {
             // START 없이 시작하면 0부터
             *locctr = 0;
             *started = 1;
+            // ★ START 없을 때도 기준값 초기화
+            g_start_addr  = 0;
+            g_prog_length = 0;
         }
     }
 
@@ -140,6 +148,12 @@ int p1_assign_loc(SourceLine *stmt, int *locctr, int *started) {
     if (new_loc > 0x10000) { // 주소가 FFFF를 넘으면 경고
         fprintf(stderr, "라인 %d: 주소가 FFFF를 초과함 (LOC=%04X -> %04X)\n",
                 stmt->line_no, *locctr, new_loc);
+    }
+
+    // ★ 프로그램 길이 갱신 (END는 위에서 미리 return해서 여기 안 옴)
+    if (*started) {
+        g_prog_length = new_loc - g_start_addr;
+        if (g_prog_length < 0) g_prog_length = 0;   // 안전장치
     }
 
     *locctr = new_loc;

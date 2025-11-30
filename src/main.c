@@ -18,19 +18,18 @@ int main(int argc, char *argv[]) {
      * ========================================================== */
     symtab_init();  // SYMTAB 초기화
 
-    FILE *interm_fp = fopen("intermediate.txt", "w");
-    if (!interm_fp) {
-        perror("failed to open intermediate file");
+    if (!int_open_for_write("intermediate.txt")) {
+        fprintf(stderr, "PASS1: intermediate.txt 생성 실패\n");
         return 1;
     }
 
-    if (p1_read_source(src_path, interm_fp) != 0) {
+    if (p1_read_source(src_path) != 0) {
         fprintf(stderr, "PASS1: p1_read_source 단계에서 오류 발생\n");
-        fclose(interm_fp);
+        int_close_write();
         return 1;
     }
 
-    fclose(interm_fp);
+    int_close_write();
 
     // PASS1 끝난 뒤 SYMTAB 파일 출력
     symtab_write_to_file("symtab.txt");
@@ -55,12 +54,14 @@ int main(int argc, char *argv[]) {
     FILE *obj_fp = fopen("out.obj", "w");
     if (!obj_fp) {
         perror("PASS2: out.obj 생성 실패");
+        int_close_read();
         return 1;
     }
 
     FILE *lst_fp = fopen("out.lst", "w");
     if (!lst_fp) {
         perror("PASS2: out.lst 생성 실패");
+        int_close_read();
         return 1;
     }
 
@@ -69,10 +70,10 @@ int main(int argc, char *argv[]) {
     // 프로그램 이름 및 시작 주소 가져오기
     // START 라인 처리 필요 → PASS1에서 start address 저장했다면 가져올 수 있음.
     // 일단 기본값 0으로 처리
-    int start_addr = 0;
-    int program_length = 0;
+    int start_addr = g_start_addr;
+    int program_length = g_prog_length;
 
-    p2_write_obj_header(obj_fp, "PROG", start_addr, program_length);
+    p2_write_obj_header(obj_fp, g_progname, start_addr, program_length);
 
 
     /* ==========================================================

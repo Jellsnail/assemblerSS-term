@@ -1,14 +1,6 @@
-   1 | 3000 | L:EX3    | OP:START    | OPR:3000
-   2 | 3000 | L:BUF    | OP:RESB     | OPR:20
-   3 | 3014 | L:MSG    | OP:BYTE     | OPR:X'48656C6C6F'   . "Hello" (hex)
-   4 | 3019 | L:COUNT  | OP:WORD     | OPR:10
-   5 | 301C | L:-      | OP:LDA      | OPR:COUNT
-   6 | 301F | L:-      | OP:SUB      | OPR:ONE
-   7 | 3022 | L:-      | OP:STA      | OPR:COUNT
-   8 | 3025 | L:-      | OP:COMP     | OPR:ZERO
-   9 | 3028 | L:-      | OP:JEQ      | OPR:DONE
-  10 | 302B | L:-      | OP:J        | OPR:EX3
-  11 | 302E | L:ONE    | OP:WORD     | OPR:1
-  12 | 3031 | L:ZERO   | OP:WORD     | OPR:0
-  13 | 3034 | L:DONE   | OP:RSUB     | OPR:-
-  14 |      | L:-      | OP:END      | OPR:EX3
+1000 COPY START 1000 0
+1000 FIRST LDA ALPHA 0
+1003 - STA BETA 0
+1006 ALPHA WORD 1 0
+1009 BETA RESW 1 0
+0000 - END FIRST 0

@@ -1,18 +1,14 @@
-/* 지금 단계에선:
-
-label 규칙(1~6, 첫 글자 A~Z, 나머지 A~Z/0~9) 적용
-
-첫 단어가 label 규칙을 만족하면 label + opcode + operand, 아니면 opcode + operand
-
-줄 맨 앞이 . 이면 코멘트 라인
-
-operand는 opcode 뒤의 남은 부분 전체(앞뒤 공백 제거)로 취급
-→ BYTE X'0F' 같은 것도 그대로 operand에 들어간다. */
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 
 #include "assembler.h"
+#include "intfile.h"   // IntRecord, int_write_record 사용
+
+// 전역 프로그램 정보 (정의)
+int g_start_addr  = 0;
+int g_prog_length = 0;
+char g_progname[MAX_LABEL_LEN] = "NONAME";
 
 /* label 규칙: 1~6글자, 첫 글자 A~Z, 나머지 A~Z/0~9 */
 static int is_valid_label(const char *s) {
@@ -183,7 +179,15 @@ static void parse_line(const char *line, SourceLine *out) {
     out->operand[MAX_OPERAND_LEN - 1] = '\0';
 }
 
-int p1_read_source(const char *src_path, FILE *interm_fp) {
+/*
+ * PASS-1 전체 흐름:
+ *  - 소스 한 줄 읽기
+ *  - parse_line → SourceLine 채우기
+ *  - p1_assign_loc → LOC 부여
+ *  - p1_assign_sym → SYMTAB 등록
+ *  - IntRecord 구성 → int_write_record() 호출
+ */
+int p1_read_source(const char *src_path) {
     FILE *fp = fopen(src_path, "r");
     if (!fp) {
         perror("failed to open source file");
@@ -199,45 +203,77 @@ int p1_read_source(const char *src_path, FILE *interm_fp) {
     while (fgets(line, sizeof(line), fp) != NULL) {
         line_no++;
 
-        // ⚠️ 여기서 한 번만 전체 초기화
         memset(&stmt, 0, sizeof(stmt));
         stmt.line_no = line_no;
 
         parse_line(line, &stmt);
 
+        // 빈 줄은 INTFILE에 기록하지 않아도 됨
+        if (stmt.type == LINE_EMPTY) {
+            continue;
+        }
+
+        // START 라인에서 프로그램 이름 설정
+        if (stmt.type == LINE_STATEMENT &&
+            strcmp(stmt.opcode, "START") == 0 &&
+            stmt.label[0] != '\0') {
+            strncpy(g_progname, stmt.label, MAX_LABEL_LEN - 1);
+            g_progname[MAX_LABEL_LEN - 1] = '\0';
+        }
+
+        int errflag = 0;
+
         // LOC 계산
         p1_assign_loc(&stmt, &locctr, &started);
+        // (필요하면 나중에 p1_assign_loc의 에러를 errflag에 반영 가능)
 
-        // SYMTAB에 label 등록
-        p1_assign_sym(&stmt);
+        // SYMTAB에 label 등록 (중복 라벨 등 에러 체크)
+        if (p1_assign_sym(&stmt) != 0) {
+            errflag = 1;   // 예: 1 = SYMTAB 관련 에러 (중복 라벨 등)
+        }
 
-        // 중간파일 기록
-        switch (stmt.type) {
-        case LINE_EMPTY:
-            fprintf(interm_fp, "%4d |          | (blank)\n", stmt.line_no);
-            break;
-        case LINE_COMMENT:
-            fprintf(interm_fp, "%4d |          | COMMENT | %s\n",
-                    stmt.line_no, stmt.comment);
-            break;
-        case LINE_STATEMENT:
-            if (stmt.has_loc) {
-                fprintf(interm_fp,
-                        "%4d | %04X | L:%-6s | OP:%-8s | OPR:%s\n",
-                        stmt.line_no,
-                        stmt.loc & 0xFFFF,
-                        stmt.label[0]   ? stmt.label   : "-",
-                        stmt.opcode[0]  ? stmt.opcode  : "-",
-                        stmt.operand[0] ? stmt.operand : "-");
+        // INTFILE에 기록할 레코드 구성
+        IntRecord rec;
+        memset(&rec, 0, sizeof(rec));
+
+        // 공통: 원본 줄 보관 (리스트 파일에서 사용)
+        strncpy(rec.raw_line, stmt.original, LINEBUF_LEN - 1);
+        rec.raw_line[LINEBUF_LEN - 1] = '\0';
+
+        if (stmt.type == LINE_COMMENT) {
+            // 주석 라인
+            rec.is_comment = 1;
+            // access_int_file.c의 int_write_record는
+            // rec->raw_line만 보고 ". ..." 형태로 저장/판단한다.
+            int_write_record(&rec);
+        } else if (stmt.type == LINE_STATEMENT) {
+            rec.is_comment = 0;
+            rec.loc        = stmt.has_loc ? stmt.loc : 0;
+            rec.errflag    = errflag;
+
+            // label/opcode/operand가 없으면 "-"로 대체
+            if (stmt.label[0] != '\0') {
+                strncpy(rec.label, stmt.label, LABEL_LEN - 1);
+                rec.label[LABEL_LEN - 1] = '\0';
             } else {
-                fprintf(interm_fp,
-                        "%4d |      | L:%-6s | OP:%-8s | OPR:%s\n",
-                        stmt.line_no,
-                        stmt.label[0]   ? stmt.label   : "-",
-                        stmt.opcode[0]  ? stmt.opcode  : "-",
-                        stmt.operand[0] ? stmt.operand : "-");
+                strcpy(rec.label, "-");
             }
-            break;
+
+            if (stmt.opcode[0] != '\0') {
+                strncpy(rec.opcode, stmt.opcode, OPCODE_LEN - 1);
+                rec.opcode[OPCODE_LEN - 1] = '\0';
+            } else {
+                strcpy(rec.opcode, "-");
+            }
+
+            if (stmt.operand[0] != '\0') {
+                strncpy(rec.operand, stmt.operand, OPERAND_LEN - 1);
+                rec.operand[OPERAND_LEN - 1] = '\0';
+            } else {
+                strcpy(rec.operand, "-");
+            }
+
+            int_write_record(&rec);
         }
     }
 

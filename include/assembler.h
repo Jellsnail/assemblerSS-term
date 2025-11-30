@@ -32,7 +32,7 @@ typedef struct {
 } SourceLine;
 
 /* PASS1 - Step1 */
-int p1_read_source(const char *src_path, FILE *interm_fp);
+int p1_read_source(const char *src_path);
 
 /* PASS1 - Step2: LOC 계산 */
 int p1_assign_loc(SourceLine *stmt, int *locctr, int *started);
@@ -53,6 +53,10 @@ void p2_write_list_line(FILE *fp, const IntRecord *rec,
                         const char *objcode, int objlen);
 void p2_write_list_footer(FILE *fp);
 
+// PASS-1에서 계산해 PASS-2에서 사용하는 전역 정보
+extern int  g_start_addr;                    // START 주소
+extern int  g_prog_length;                   // 프로그램 길이 (바이트)
+extern char g_progname[MAX_LABEL_LEN];       // 프로그램 이름 (START 라벨)
 
 #endif
 

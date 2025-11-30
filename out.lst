@@ -1,5 +1,11 @@
 ===== ASSEMBLY LISTING =====
 LOC   OBJCODE     SOURCE
 ---------------------------------------------
+1000              COPY   START    1000
+1000  001006      FIRST  LDA      ALPHA
+1003  0C1009             STA      BETA
+1006  000001      ALPHA  WORD     1
+1009              BETA   RESW     1
+0000                     END      FIRST
 ---------------------------------------------
 ===== END OF LISTING =====
